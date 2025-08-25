@@ -1,0 +1,17 @@
+services:
+  desmiojo-db:
+    image: postgres:14
+    container_name: desmiojo-db
+    restart: always
+    environment:
+      POSTGRES_USER: desmiojo
+      POSTGRES_PASSWORD: P@ssword
+      POSTGRES_DB: desmiojo_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+      - ./sql-init.sql:/docker-entrypoint-initdb.d/init.sql
+
+volumes:
+  pgdata:
