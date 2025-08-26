@@ -1,5 +1,5 @@
 export class RecipeID {
-  private value: string;
+  public readonly value: string;
 
   constructor(slug: string) {
     this.value = slug;
@@ -8,9 +8,5 @@ export class RecipeID {
   public createFromTitle(title: string): RecipeID {
     const slug = title.toLocaleLowerCase().replace(/\s+/g, "-");
     return new RecipeID(slug);
-  }
-
-  public get() {
-    return this.value;
   }
 }

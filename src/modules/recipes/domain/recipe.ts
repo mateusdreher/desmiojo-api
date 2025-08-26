@@ -57,7 +57,7 @@ class Recipe {
   public get preparation_time_minutes(): number {
     return this._preparation_time_minutes;
   }
-  public get ingredients(): Ingredient {
+  public get ingredients(): Ingredient[] {
     return this._ingredients;
   }
   public get status(): string {

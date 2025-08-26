@@ -34,14 +34,14 @@ export class Ingredient {
     if (isNaN(Number(quantity))) {
       throw new Error(`Invalid quantity: ${quantity}`);
     }
-    if (!UNIT_TYPES_VALIDATE.includes(unit)) {
+    if (!UNIT_TYPES_VALIDATE.includes(unit as UnitTypes)) {
       throw new Error(`Invalid unit: ${unit}`);
     }
 
     return new Ingredient({
       value,
       quantity: Number(quantity),
-      unit,
+      unit: unit as UnitTypes,
     });
   }
 }

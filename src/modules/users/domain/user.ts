@@ -69,19 +69,19 @@ export class User {
   }
 
   public changeName(newName: string) {
-    this.name = newName;
-    this.updatedAt = new Date();
+    this._name = newName;
+    this._updatedAt = new Date();
   }
 
   public changeLogin(newLogin: string) {
-    this.login = newLogin;
-    this.updatedAt = new Date();
+    this._login = newLogin;
+    this._updatedAt = new Date();
   }
   public async changePassword(newPlainTextPassword: string): Promise<void> {
-    this.password = await Password.create(newPlainTextPassword);
-    this.updatedAt = new Date();
+    this._password = await Password.create(newPlainTextPassword);
+    this._updatedAt = new Date();
   }
   public async isPasswordCorrect(plainTextPassword: string): Promise<boolean> {
-    return this.password.compare(plainTextPassword);
+    return this._password.compare(plainTextPassword);
   }
 }
