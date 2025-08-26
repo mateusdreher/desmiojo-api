@@ -2,6 +2,8 @@ import { UserID as AuthorID } from "../../users";
 import { Ingredient } from "./vo/ingredient.vo";
 import { RecipeID } from "./vo/recipe-id.vo";
 
+export type RecipeStatusType = "draft" | "published";
+
 type RecipeProps = {
   id: RecipeID;
   category: number;
@@ -11,12 +13,12 @@ type RecipeProps = {
   servings: number;
   preparation_method: string;
   ingredients: Ingredient[];
-  status: "draft" | "published";
+  status: RecipeStatusType;
   createdAt: Date;
   updatedAt: Date;
 };
 
-class Recipe {
+export class Recipe {
   public readonly id: RecipeID;
   public readonly author: AuthorID;
   private _category: number;
@@ -25,7 +27,7 @@ class Recipe {
   private _servings: number;
   private _preparation_method: string;
   private _ingredients: Ingredient[];
-  private _status: "draft" | "published";
+  private _status: RecipeStatusType;
   private _createdAt: Date;
   private _updatedAt: Date;
 
@@ -78,7 +80,7 @@ class Recipe {
     servings: number;
     preparation_method: string;
     ingredients: Ingredient[];
-    status: "draft" | "published";
+    status?: RecipeStatusType;
   }): Promise<Recipe> {
     return new Recipe({
       id: new RecipeID(props.title),
@@ -89,7 +91,7 @@ class Recipe {
       preparation_method: props.preparation_method,
       ingredients: props.ingredients || [],
       servings: props.servings,
-      status: props.status,
+      status: props.status || "draft",
       createdAt: new Date(),
       updatedAt: new Date(),
     });
@@ -104,7 +106,7 @@ class Recipe {
     servings: number;
     preparation_method: string;
     ingredients: Ingredient[];
-    status: "draft" | "published";
+    status: RecipeStatusType;
     createdAt: Date;
     updatedAt: Date;
   }): Recipe {

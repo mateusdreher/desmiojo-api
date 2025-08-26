@@ -1,4 +1,4 @@
-type UnitTypes = "ml" | "g" | "un";
+export type UnitTypes = "ml" | "g" | "un";
 const UNIT_TYPES_VALIDATE = ["ml", "g", "un"] as const;
 
 export class Ingredient {
@@ -12,7 +12,11 @@ export class Ingredient {
     this.unit = props.unit;
   }
 
-  public create(props: { value: string; quantity: number; unit: UnitTypes }) {
+  public static create(props: {
+    value: string;
+    quantity: number;
+    unit: UnitTypes;
+  }) {
     if (props.value.trim().length < 2) {
       throw new Error("Ingredient name is toot short");
     }

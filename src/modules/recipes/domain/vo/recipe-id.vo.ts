@@ -5,7 +5,7 @@ export class RecipeID {
     this.value = slug;
   }
 
-  public createFromTitle(title: string): RecipeID {
+  public static createFromTitle(title: string): RecipeID {
     const slug = title.toLocaleLowerCase().replace(/\s+/g, "-");
     return new RecipeID(slug);
   }
