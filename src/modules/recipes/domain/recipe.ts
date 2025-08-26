@@ -1,29 +1,31 @@
-import { UserID } from "../../users";
-import { Ingredients } from "./vo/ingredients.vo";
+import { UserID as AuthorID } from "../../users";
+import { Ingredient } from "./vo/ingredient.vo";
 import { RecipeID } from "./vo/recipe-id.vo";
 
 type RecipeProps = {
   id: RecipeID;
   category: number;
-  author: UserID;
+  author: AuthorID;
   title: string;
   preparation_time_minutes: number;
   servings: number;
   preparation_method: string;
-  ingredients: Ingredients;
+  ingredients: Ingredient[];
+  status: "draft" | "published";
   createdAt: Date;
   updatedAt: Date;
 };
 
 class Recipe {
   public readonly id: RecipeID;
+  public readonly author: AuthorID;
   private _category: number;
-  private _author: UserID;
   private _title: string;
   private _preparation_time_minutes: number;
   private _servings: number;
   private _preparation_method: string;
-  private _ingredients: Ingredients;
+  private _ingredients: Ingredient[];
+  private _status: "draft" | "published";
   private _createdAt: Date;
   private _updatedAt: Date;
 
@@ -35,15 +37,13 @@ class Recipe {
     this._preparation_time_minutes = init.preparation_time_minutes;
     this._servings = init.servings;
     this._ingredients = init.ingredients;
+    this._status = init.status;
     this._createdAt = init.createdAt;
     this._updatedAt = init.updatedAt;
   }
 
   public get category(): number {
     return this._category;
-  }
-  public get author(): UserID {
-    return this._author;
   }
   public get title(): string {
     return this._title;
@@ -57,28 +57,39 @@ class Recipe {
   public get preparation_time_minutes(): number {
     return this._preparation_time_minutes;
   }
-  public get ingredients(): Ingredients {
+  public get ingredients(): Ingredient {
     return this._ingredients;
+  }
+  public get status(): string {
+    return this._status;
+  }
+  public get createdAt(): Date {
+    return this._createdAt;
+  }
+  public get updatedAt(): Date {
+    return this._updatedAt;
   }
 
   public static async create(props: {
     category: number;
-    author: string;
+    author: AuthorID;
     title: string;
     preparation_time_minutes: number;
     servings: number;
     preparation_method: string;
-    ingredients: string;
+    ingredients: Ingredient[];
+    status: "draft" | "published";
   }): Promise<Recipe> {
     return new Recipe({
       id: new RecipeID(props.title),
       category: props.category,
       title: props.title,
-      author: new UserID(props.author),
+      author: props.author,
       preparation_time_minutes: props.preparation_time_minutes,
       preparation_method: props.preparation_method,
-      ingredients: new Ingredients(Ingredients),
+      ingredients: props.ingredients || [],
       servings: props.servings,
+      status: props.status,
       createdAt: new Date(),
       updatedAt: new Date(),
     });
@@ -88,15 +99,32 @@ class Recipe {
     id: RecipeID;
     category: number;
     title: string;
-    author: UserID;
+    author: AuthorID;
     preparation_time_minutes: number;
     servings: number;
     preparation_method: string;
-    ingredients: Ingredients;
+    ingredients: Ingredient[];
+    status: "draft" | "published";
+    createdAt: Date;
+    updatedAt: Date;
   }): Recipe {
     return new Recipe(props);
   }
 
+  public publish() {
+    if ((this._ingredients, length === 0)) {
+      throw new Error("Cannot publish a recipe without ingredients");
+    }
+
+    this._status = "published";
+    this._updatedAt = new Date();
+  }
+
+  public changeTitle(newTitle: string) {
+    if (newTitle.trim().length < 3) throw new Error("Title is too short.");
+    this._title = newTitle;
+    this._updatedAt = new Date();
+  }
   public changeCategory(newCategory: number) {
     this._category = newCategory;
     this._updatedAt = new Date();
