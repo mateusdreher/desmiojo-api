@@ -25,12 +25,12 @@ export class PrismaRecipeRepository implements IRecipeRepository {
       orderBy: { createdAt: "desc" },
     });
 
-    return rawRecipes.lenght === 0
+    return !rawRecipes
       ? []
       : rawRecipes.map((item: PrismaRecipe) => RecipeMapper.toDomain(item));
   }
   async getByAuthorAndId(authorId: string, id: string): Promise<Recipe | null> {
-    const rawRecipe = await this.prisma.recipe.findOne({
+    const rawRecipe = await this.prisma.recipe.findFirst({
       where: { authorId, id },
     });
 
@@ -39,7 +39,7 @@ export class PrismaRecipeRepository implements IRecipeRepository {
     return RecipeMapper.toDomain(rawRecipe);
   }
   async getById(id: string): Promise<Recipe | null> {
-    const rawRecipe = await this.prisma.recipe.findOne({
+    const rawRecipe = await this.prisma.recipe.findFirst({
       where: { id },
     });
 

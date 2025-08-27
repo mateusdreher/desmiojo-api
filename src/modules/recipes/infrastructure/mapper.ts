@@ -1,4 +1,4 @@
-import { Recipe as PrismaRecipe, Prisma } from "@prisma/client/extension";
+import { Recipe as PrismaRecipe, Prisma, RecipeStatus } from "@prisma/client";
 import { Recipe, RecipeStatusType } from "../domain/recipe";
 import { UserID as AuthorID } from "../../users";
 import { Ingredient, UnitTypes } from "../domain/vo/ingredient.vo";
@@ -7,7 +7,7 @@ import { RecipeID } from "../domain/vo/recipe-id.vo";
 export class RecipeMapper {
   public static toDomain(raw: PrismaRecipe): Recipe {
     const id = new RecipeID(raw.id);
-    const author = new AuthorID(raw.author);
+    const author = new AuthorID(raw.authorId);
     const ingredientsSplited = raw.ingredients.split(",");
     const ingredients = ingredientsSplited.map((item: string) => {
       const [value, quantity, unit] = item.split("-");
@@ -41,14 +41,14 @@ export class RecipeMapper {
 
     return {
       id: entity.id.value,
-      author: entity.author.value,
-      ingredients: ingredientsToInsert,
+      authorId: entity.author.value,
+      ingredients: ingredientsToInsert.join(","),
       category: entity.category,
       title: entity.title,
       servings: entity.servings,
       preparation_method: entity.preparation_method,
       preparation_time_minutes: entity.preparation_time_minutes,
-      status: entity.status,
+      status: entity.status as RecipeStatus,
       createdAt: entity.createdAt,
       updatedAt: entity.updatedAt,
     };
