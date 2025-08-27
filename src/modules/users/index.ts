@@ -1,1 +1,1 @@
-export { UserID } from "./domain/vo/user-id.vo.ts";
+export { UserID } from "./domain/vo/user-id.vo";

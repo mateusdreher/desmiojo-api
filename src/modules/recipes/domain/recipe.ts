@@ -33,6 +33,7 @@ export class Recipe {
 
   private constructor(init: RecipeProps) {
     this.id = init.id;
+    this.author = init.author;
     this._category = init.category;
     this._title = init.title;
     this._preparation_method = init.preparation_method;

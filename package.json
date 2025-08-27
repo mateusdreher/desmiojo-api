@@ -13,7 +13,11 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "ts-node --transpile-only ./server.ts",
-    "dev": "ts-node-dev --inspect --transpile-only --ignore-watch node_modules ./server.ts"
+    "dev": "ts-node-dev --inspect --transpile-only --ignore-watch node_modules ./server.ts",
+    "build": "tsc"
+  },
+  "prisma": {
+    "seed": "ts-node prisma/seed.ts"
   },
   "dependencies": {
     "@prisma/client": "^6.14.0",
@@ -24,6 +28,7 @@
     "jsonwebtoken": "^9.0.2",
     "node": "^24.6.0",
     "prisma": "^6.14.0",
+    "uuid": "^11.1.0",
     "uuidv4": "^6.2.13"
   },
   "devDependencies": {

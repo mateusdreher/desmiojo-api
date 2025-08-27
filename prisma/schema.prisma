@@ -26,7 +26,6 @@ model User {
 
 model Recipe {
   id                       String       @id @default(uuid())
-  category                 Int
   title                    String
   preparation_time_minutes Int
   servings                 Int
@@ -36,8 +35,18 @@ model Recipe {
   createdAt                DateTime     @default(now()) @map("createdAt")
   updatedAt                DateTime     @updatedAt @map("updated_at")
 
-  author   User   @relation(fields: [authorId], references: [id])
-  authorId String
+  author     User     @relation(fields: [authorId], references: [id])
+  authorId   String
+  category   Category @relation(fields: [categoryId], references: [id])
+  categoryId Int
 
   @@map("recipes")
+}
+
+model Category {
+  id      Int      @id @default(autoincrement())
+  name    String
+  recipes Recipe[]
+
+  @@map("categories")
 }

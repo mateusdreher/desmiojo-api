@@ -10,8 +10,25 @@ services:
     ports:
       - "5432:5432"
     volumes:
-      - pgdata:/var/lib/postgresql/data
-      - ./sql-init.sql:/docker-entrypoint-initdb.d/init.sql
+      - desmiojo-db-data:/var/lib/postgresql/data
+
+  desmiojo-api:
+    build: .
+    container_name: desmiojo-api
+    restart: always
+    depends_on:
+      - desmiojo-db
+    ports: ["3333", "3004"]
+    environment:
+      DATABASE_URL: "postgresql://desmiojo:P@ssword@desmiojo-db:5432/desmiojo_db"
+      PORT: 3004
+      JWT_SECRET: "seu-segredo-super-secreto-aqui"
+
+    volumes:
+      - ./src:/app/src
+      - ./prisma:/app/prisma
+
+    command: sh -c "npx prisma migrate deploy && npx prisma db seed && npm run start"
 
 volumes:
-  pgdata:
+  desmiojo-db-data:
