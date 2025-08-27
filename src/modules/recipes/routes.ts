@@ -3,12 +3,17 @@ import { createRecipeController } from "./infrastructure/controllers/create-reci
 import { listByAuthorRecipeController } from "./infrastructure/controllers/list-by-author.controller";
 import { deleteRecipeController } from "./infrastructure/controllers/delete-recipe.controller";
 import { publishRecipeController } from "./infrastructure/controllers/publish-recipe.controller";
+import { authMiddleware } from "../__shared__/infrastructure/http/middlewares/auth.middleware";
 
 const router = Router();
 
-router.post("/", (request: Request, response: Response, next: NextFunction) => {
-  return createRecipeController.handle(request, response, next);
-});
+router.post(
+  "/",
+  authMiddleware,
+  (request: Request, response: Response, next: NextFunction) => {
+    return createRecipeController.handle(request, response, next);
+  },
+);
 
 router.get(
   "/author",
