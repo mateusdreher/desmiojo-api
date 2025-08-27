@@ -4,7 +4,9 @@ import { Recipe, RecipeStatusType } from "../../domain";
 import { RecipeOutputDTO } from "../dtos/recipe.output.dto";
 import { IRecipeRepository } from "../interfaces/recipe.repository.interface";
 
-export class ListByUserUseCase implements IUseCase<string, RecipeOutputDTO[]> {
+export class ListByAuthorUseCase
+  implements IUseCase<string, RecipeOutputDTO[]>
+{
   constructor(private readonly recipeRepository: IRecipeRepository) {}
 
   async execute(input: string): Promise<RecipeOutputDTO[]> {

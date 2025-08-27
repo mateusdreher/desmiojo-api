@@ -1,3 +1,8 @@
 export interface IAuthProvider {
-  generateToken(id: string): Promise<string>;
+  generateToken(payload: AuthTokenPayload): string;
+  verifyToken(token: string): AuthTokenPayload;
 }
+
+export type AuthTokenPayload = {
+  userId: string;
+};

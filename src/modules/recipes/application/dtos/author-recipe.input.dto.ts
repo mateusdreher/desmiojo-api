@@ -1,4 +1,4 @@
-export type DeleteInputDTO = {
+export type AuthorRecipeInputDTO = {
   authorId: string;
   recipeId: string;
 };

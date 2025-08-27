@@ -2,10 +2,11 @@ import { IUseCase } from "../../../__shared__/application/interfaces/use-case.in
 import { AuthorRecipeInputDTO } from "../dtos/author-recipe.input.dto";
 import { IRecipeRepository } from "../interfaces/recipe.repository.interface";
 
-export class DeleteUseCase implements IUseCase<AuthorRecipeInputDTO, void> {
+export class PublishrecipeUseCase
+  implements IUseCase<AuthorRecipeInputDTO, void>
+{
   constructor(private readonly recipeRepository: IRecipeRepository) {}
-
-  async execute(input: AuthorRecipeInputDTO) {
+  async execute(input: AuthorRecipeInputDTO): Promise<void> {
     const isUserAuthor = await this.recipeRepository.getByAuthorAndId(
       input.authorId,
       input.recipeId,
@@ -15,12 +16,14 @@ export class DeleteUseCase implements IUseCase<AuthorRecipeInputDTO, void> {
       throw new Error("User not author of this recipe");
     }
 
-    const isRecipeExists = await this.recipeRepository.getById(input.recipeId);
+    const recipe = await this.recipeRepository.getById(input.recipeId);
 
-    if (!isRecipeExists) {
+    if (!recipe) {
       throw new Error("Recipe does not exists");
     }
 
-    await this.recipeRepository.delete(input.recipeId);
+    recipe.publish();
+
+    await this.recipeRepository.save(recipe);
   }
 }

@@ -4,7 +4,11 @@ import { Recipe } from "../../domain";
 import { RecipeMapper } from "../mapper";
 
 export class PrismaRecipeRepository implements IRecipeRepository {
-  constructor(private readonly prisma: PrismaClient) {}
+  private prisma: PrismaClient;
+
+  constructor() {
+    this.prisma = new PrismaClient();
+  }
 
   async save(recipe: Recipe) {
     const persistenceData = RecipeMapper.toSchema(recipe);
