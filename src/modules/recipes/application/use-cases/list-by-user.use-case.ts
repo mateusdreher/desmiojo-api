@@ -10,7 +10,7 @@ export class ListByUserUseCase implements IUseCase<string, RecipeOutputDTO[]> {
   async execute(input: string): Promise<RecipeOutputDTO[]> {
     const authorID = new AuthorID(input);
 
-    const recipes = await this.recipeRepository.getByUser(authorID.value);
+    const recipes = await this.recipeRepository.getByAuthor(authorID.value);
 
     if (recipes.length === 0) return [];
 

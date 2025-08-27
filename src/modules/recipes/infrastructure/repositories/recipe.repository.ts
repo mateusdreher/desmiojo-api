@@ -1,4 +1,4 @@
-import { Prisma, PrismaClient } from "@prisma/client/extension";
+import { PrismaClient, Recipe as PrismaRecipe } from "@prisma/client";
 import { IRecipeRepository } from "../../application/interfaces/recipe.repository.interface";
 import { Recipe } from "../../domain";
 import { RecipeMapper } from "../mapper";
@@ -27,7 +27,7 @@ export class PrismaRecipeRepository implements IRecipeRepository {
 
     return rawRecipes.lenght === 0
       ? []
-      : rawRecipes.map((item: Prisma.Recipe) => RecipeMapper.toDomain(item));
+      : rawRecipes.map((item: PrismaRecipe) => RecipeMapper.toDomain(item));
   }
   async getByAuthorAndId(authorId: string, id: string): Promise<Recipe | null> {
     const rawRecipe = await this.prisma.recipe.findOne({

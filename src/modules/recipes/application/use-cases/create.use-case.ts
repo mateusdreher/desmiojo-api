@@ -29,7 +29,7 @@ export class CreateUseCase implements IUseCase<CreateRecipeInputDTO, Recipe> {
       ...rest,
     });
 
-    await this.recipeRepository.create(newRecipe);
+    await this.recipeRepository.save(newRecipe);
 
     return newRecipe;
   }
