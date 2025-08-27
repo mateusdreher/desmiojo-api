@@ -28,7 +28,9 @@ export class LoginUseCase implements IUseCase<LoginInputDTO, LoginOutputDTO> {
       throw new InvalidCredentialsError();
     }
 
-    const token = await this.authProvider.generateToken(user.id.value);
+    const token = await this.authProvider.generateToken({
+      userId: user.id.value,
+    });
 
     return {
       token,

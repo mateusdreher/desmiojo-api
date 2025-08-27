@@ -3,7 +3,7 @@ import * as jwt from "jsonwebtoken";
 import {
   AuthTokenPayload,
   IAuthProvider,
-} from "../../application/interfaces/auth.provider.interface.ts";
+} from "../../application/interfaces/auth.provider.interface";
 
 export class InvalidTokenError extends Error {
   constructor(message: string = "JWT token is invalid or expired.") {
