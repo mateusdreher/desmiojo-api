@@ -1,0 +1,22 @@
+{
+  "name": "desmiojo-api",
+  "version": "1.0.0",
+  "description": "",
+  "repository": {
+    "type": "git",
+    "url": "git@github.com-personal:mateusdreher/desmiojo-api.git"
+  },
+  "license": "ISC",
+  "author": "mateusdreher",
+  "type": "commonjs",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "@prisma/client": "^6.14.0",
+    "bcrypt": "^6.0.0",
+    "prisma": "^6.14.0",
+    "uuidv4": "^6.2.13"
+  }
+}

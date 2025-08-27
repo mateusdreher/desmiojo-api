@@ -1,29 +1,53 @@
+import { Prisma, PrismaClient } from "@prisma/client/extension";
 import { IRecipeRepository } from "../../application/interfaces/recipe.repository.interface";
 import { Recipe } from "../../domain";
-import { Ingredient } from "../../domain/vo/ingredient.vo";
+import { RecipeMapper } from "../mapper";
 
-export class RecipeRepository implements IRecipeRepository {
-  create(props: Recipe) {
-    const { ingredients, ...rest } = props;
+export class PrismaRecipeRepository implements IRecipeRepository {
+  constructor(private readonly prisma: PrismaClient) {}
 
-    const ingredientsToInsert = ingredients.map((ingredient) => {
-      const ingredientVO = Ingredient.create(ingredient);
-      return ingredientVO.toString();
+  async save(recipe: Recipe) {
+    const persistenceData = RecipeMapper.toSchema(recipe);
+
+    await this.prisma.recipe.upsert({
+      where: { id: recipe.id.toString() },
+      create: persistenceData,
+      update: {
+        ...persistenceData,
+        authorId: undefined,
+        createdAt: undefined,
+      },
+    });
+  }
+  async getByAuthor(authorId: string): Promise<Recipe[]> {
+    const rawRecipes = await this.prisma.recipe.findMany({
+      where: { authorId: authorId.toString() },
+      orderBy: { createdAt: "desc" },
     });
 
-    //salvar no bacno com join dos ingredientes
-    throw new Error("Method not implemented.");
+    return rawRecipes.lenght === 0
+      ? []
+      : rawRecipes.map((item: Prisma.Recipe) => RecipeMapper.toDomain(item));
   }
-  getByUser(userId: string): Promise<Recipe[]> {
-    throw new Error("Method not implemented.");
+  async getByAuthorAndId(authorId: string, id: string): Promise<Recipe | null> {
+    const rawRecipe = await this.prisma.recipe.findOne({
+      where: { authorId, id },
+    });
+
+    if (!rawRecipe) return null;
+
+    return RecipeMapper.toDomain(rawRecipe);
   }
-  getByAuthorAndId(authorId: string, id: string): Promise<Recipe | null> {
-    throw new Error("Method not implemented.");
+  async getById(id: string): Promise<Recipe | null> {
+    const rawRecipe = await this.prisma.recipe.findOne({
+      where: { id },
+    });
+
+    if (!rawRecipe) return null;
+
+    return RecipeMapper.toDomain(rawRecipe);
   }
-  getById(id: string): Promise<Recipe | null> {
-    throw new Error("Method not implemented.");
-  }
-  delete(id: string) {
-    throw new Error("Method not implemented.");
+  async delete(id: string) {
+    await this.prisma.recipe.delete({ where: { id } });
   }
 }
