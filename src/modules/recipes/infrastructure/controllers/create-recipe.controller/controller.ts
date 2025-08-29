@@ -2,10 +2,11 @@ import { Request, Response, NextFunction } from "express";
 import { CreateRecipeInputDTO } from "../../../application/dtos/create.input.dto";
 import { Recipe } from "../../../domain";
 import { IUseCase } from "../../../../__shared__/application/interfaces/use-case.interface";
+import { RecipeOutputDTO } from "../../../application/dtos/recipe.output.dto";
 
 export class CreateRecipeController {
   constructor(
-    private readonly useCase: IUseCase<CreateRecipeInputDTO, Recipe>,
+    private readonly useCase: IUseCase<CreateRecipeInputDTO, RecipeOutputDTO>,
   ) {}
 
   async handle(request: Request, response: Response, next: NextFunction) {
@@ -31,9 +32,9 @@ export class CreateRecipeController {
         return response.status(400).send("Review your payload");
       }
 
-      await this.useCase.execute({
+      const recipe = await this.useCase.execute({
         categoryId,
-        authorId: request.user?.userId,
+        authorId: request.user.userId,
         title,
         preparation_time_minutes,
         servings,
@@ -41,7 +42,9 @@ export class CreateRecipeController {
         ingredients,
       });
 
-      response.status(200).json({ message: "Recipe created as draft" });
+      console.log("\n\nCONTROLLER", recipe);
+
+      response.status(200).json(recipe);
     } catch (error) {
       next(error);
     }

@@ -2,13 +2,17 @@ import { IUseCase } from "../../../__shared__/application/interfaces/use-case.in
 import { UserID as AuthorID } from "../../../users";
 import { Recipe } from "../../domain";
 import { Ingredient } from "../../domain/vo/ingredient.vo";
+import { RecipeID } from "../../domain/vo/recipe-id.vo";
 import { CreateRecipeInputDTO } from "../dtos/create.input.dto";
+import { RecipeOutputDTO } from "../dtos/recipe.output.dto";
 import { IRecipeRepository } from "../interfaces/recipe.repository.interface";
 
-export class CreateUseCase implements IUseCase<CreateRecipeInputDTO, Recipe> {
+export class CreateUseCase
+  implements IUseCase<CreateRecipeInputDTO, RecipeOutputDTO>
+{
   constructor(private readonly recipeRepository: IRecipeRepository) {}
 
-  async execute(input: CreateRecipeInputDTO): Promise<Recipe> {
+  async execute(input: CreateRecipeInputDTO): Promise<RecipeOutputDTO> {
     const { authorId, ingredients, ...rest } = input;
 
     const authorID = new AuthorID(input.authorId);
@@ -21,6 +25,16 @@ export class CreateUseCase implements IUseCase<CreateRecipeInputDTO, Recipe> {
 
     await this.recipeRepository.save(newRecipe);
 
-    return newRecipe;
+    return {
+      id: newRecipe.id.value,
+      authorId: newRecipe.authorId.value,
+      categoryId: newRecipe.categoryId,
+      ingredients: newRecipe.ingredients,
+      preparation_method: newRecipe.preparation_method,
+      preparation_time_minutes: newRecipe.preparation_time_minutes,
+      servings: newRecipe.servings,
+      title: newRecipe.title,
+      status: "draft",
+    };
   }
 }

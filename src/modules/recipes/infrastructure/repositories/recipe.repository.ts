@@ -10,11 +10,8 @@ export class PrismaRecipeRepository implements IRecipeRepository {
     this.prisma = new PrismaClient();
   }
 
-  async save(recipe: Recipe) {
+  async save(recipe: Recipe): Promise<void> {
     const persistenceData = RecipeMapper.toSchema(recipe);
-    console.log("\n\n");
-    console.log(persistenceData);
-    console.log("\n\n");
     await this.prisma.recipe.upsert({
       where: { id: recipe.id.value },
       create: persistenceData,
