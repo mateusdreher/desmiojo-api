@@ -93,6 +93,27 @@ export const openapiSpecification = {
           categoryId: { type: "number", example: 2 },
         },
       },
+      UpdateRecipeInput: {
+        type: "object",
+        required: ["id"],
+        properties: {
+          title: { type: "string", example: "Bolo de Chocolate" },
+          ingredients: {
+            type: "array",
+            items: { $ref: "#/components/schemas/Ingredient" },
+          },
+          preparation_method: {
+            type: "string",
+            example: "Poe no fogo né bicho",
+          },
+          preparation_time_minutes: {
+            type: "number",
+            example: 10,
+          },
+          servings: { type: "number", example: 5 },
+          categoryId: { type: "number", example: 2 },
+        },
+      },
       RecipeOutput: {
         type: "object",
         properties: {
@@ -206,6 +227,45 @@ export const openapiSpecification = {
         responses: {
           "201": {
             description: "Receita criada com sucesso.",
+            content: {
+              "application/json": {
+                schema: { $ref: "#/components/schemas/RecipeOutput" },
+              },
+            },
+          },
+          "400": {
+            description: "Dados inválidos.",
+            content: {
+              "application/json": {
+                schema: { $ref: "#/components/schemas/ErrorOutput" },
+              },
+            },
+          },
+          "401": {
+            description: "Não autorizado.",
+            content: {
+              "application/json": {
+                schema: { $ref: "#/components/schemas/ErrorOutput" },
+              },
+            },
+          },
+        },
+      },
+      patch: {
+        tags: ["Receitas"],
+        summary: "Atualiza uma receita.",
+        security: [{ bearerAuth: [] }],
+        requestBody: {
+          required: true,
+          content: {
+            "application/json": {
+              schema: { $ref: "#/components/schemas/CreateRecipeInput" },
+            },
+          },
+        },
+        responses: {
+          "201": {
+            description: "Receita atualizada com sucesso.",
             content: {
               "application/json": {
                 schema: { $ref: "#/components/schemas/RecipeOutput" },

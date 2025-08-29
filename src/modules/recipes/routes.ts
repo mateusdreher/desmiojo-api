@@ -5,6 +5,7 @@ import { deleteRecipeController } from "./infrastructure/controllers/delete-reci
 import { publishRecipeController } from "./infrastructure/controllers/publish-recipe.controller";
 import { authMiddleware } from "../__shared__/infrastructure/http/middlewares/auth.middleware";
 import { JwtProvider } from "../users/infrastructure/providers/jwt.provider";
+import { updateRecipeController } from "./infrastructure/controllers/update-recipe-controller";
 
 const router = Router();
 const ensureAuthenticated = authMiddleware(new JwtProvider());
@@ -13,6 +14,14 @@ router.post(
   ensureAuthenticated,
   (request: Request, response: Response, next: NextFunction) => {
     return createRecipeController.handle(request, response, next);
+  },
+);
+
+router.patch(
+  "/",
+  ensureAuthenticated,
+  (request: Request, response: Response, next: NextFunction) => {
+    return updateRecipeController.handle(request, response, next);
   },
 );
 

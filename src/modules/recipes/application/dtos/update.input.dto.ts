@@ -2,7 +2,8 @@ import { IngredientsInputType } from "./ingredients.input.type";
 
 export type UpdateRecipeInputDTO = {
   id: string;
-  category?: number;
+  authorId: string;
+  categoryId?: number;
   title?: string;
   preparation_time_minutes?: number;
   servings?: number;

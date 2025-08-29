@@ -1,4 +1,5 @@
 import { UserID as AuthorID } from "../../users";
+import { IngredientsInputType } from "../application/dtos/ingredients.input.type";
 import { Ingredient } from "./vo/ingredient.vo";
 import { RecipeID } from "./vo/recipe-id.vo";
 
@@ -147,6 +148,10 @@ export class Recipe {
   }
   public changeServings(newServings: number) {
     this._servings = newServings;
+    this._updatedAt = new Date();
+  }
+  public changeIngredients(newIngredients: IngredientsInputType[]) {
+    this._ingredients = newIngredients;
     this._updatedAt = new Date();
   }
 }
