@@ -2,8 +2,9 @@ import { RecipeStatusType } from "../../domain";
 import { IngredientsInputType } from "./ingredients.input.type";
 
 export type RecipeOutputDTO = {
-  category: number;
-  author: string;
+  id: string;
+  categoryId: number;
+  authorId: string;
   title: string;
   preparation_time_minutes: number;
   servings: number;

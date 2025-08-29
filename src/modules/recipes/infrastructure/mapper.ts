@@ -1,28 +1,28 @@
 import { Recipe as PrismaRecipe, Prisma, RecipeStatus } from "@prisma/client";
 import { Recipe, RecipeStatusType } from "../domain/recipe";
 import { UserID as AuthorID } from "../../users";
-import { Ingredient, UnitTypes } from "../domain/vo/ingredient.vo";
 import { RecipeID } from "../domain/vo/recipe-id.vo";
+import { Ingredient, UnitTypes } from "../domain/vo/ingredient.vo";
 
 export class RecipeMapper {
   public static toDomain(raw: PrismaRecipe): Recipe {
     const id = new RecipeID(raw.id);
-    const author = new AuthorID(raw.authorId);
-    const ingredientsSplited = raw.ingredients.split(",");
-    const ingredients = ingredientsSplited.map((item: string) => {
-      const [value, quantity, unit] = item.split("-");
-      return Ingredient.create({
-        value,
-        quantity: Number(quantity),
-        unit: unit as UnitTypes,
-      });
-    });
+    const authorId = new AuthorID(raw.authorId);
+    console.log("\n\nVVVVVVVV");
+    console.log(raw.ingredients);
+    console.log(raw.ingredients.replace("},", "},@").split(",@"));
+    console.log("\n\nVVVVVVVV");
+    console.log("\n\nVVVVVVVV");
+    const ingredientsSplited = raw.ingredients.replace("},", "},@").split(",@");
+    const ingredients = ingredientsSplited.map((item: string) =>
+      Ingredient.load(item),
+    );
 
     return Recipe.load({
       id,
-      author,
+      authorId,
       ingredients,
-      category: raw.categoryId,
+      categoryId: raw.categoryId,
       title: raw.title,
       servings: raw.servings,
       preparation_method: raw.preparation_method,
@@ -34,16 +34,14 @@ export class RecipeMapper {
   }
 
   public static toSchema(entity: Recipe): Prisma.RecipeUncheckedCreateInput {
-    const ingredientsToInsert = entity.ingredients.map((ingredient) => {
-      const ingredientVO = Ingredient.create(ingredient);
-      return ingredientVO.toString();
-    });
-
+    console.log("\n\nENTITY");
+    console.log(entity);
+    console.log("\n\n");
     return {
       id: entity.id.value,
-      authorId: entity.author.value,
-      ingredients: ingredientsToInsert.join(","),
-      categoryId: entity.category,
+      authorId: entity.authorId.value,
+      ingredients: entity.ingredients.toString(),
+      categoryId: entity.categoryId,
       title: entity.title,
       servings: entity.servings,
       preparation_method: entity.preparation_method,

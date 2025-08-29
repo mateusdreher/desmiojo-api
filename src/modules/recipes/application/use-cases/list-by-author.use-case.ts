@@ -11,22 +11,21 @@ export class ListByAuthorUseCase
 
   async execute(input: string): Promise<RecipeOutputDTO[]> {
     const authorID = new AuthorID(input);
-
     const recipes = await this.recipeRepository.getByAuthor(authorID.value);
-
     if (recipes.length === 0) return [];
 
     return recipes.map((item: Recipe) => {
       return {
-        category: item.category,
-        author: item.author.value,
+        id: item.id.value,
+        categoryId: item.categoryId,
+        authorId: item.authorId.value,
         title: item.title,
         preparation_time_minutes: item.preparation_time_minutes,
         servings: item.servings,
         preparation_method: item.preparation_method,
         ingredients: item.ingredients.map((ingredient) => {
           return {
-            value: ingredient.value,
+            name: ingredient.name,
             unit: ingredient.unit,
             quantity: ingredient.quantity,
           };

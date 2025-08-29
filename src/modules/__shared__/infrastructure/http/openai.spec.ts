@@ -8,7 +8,7 @@ export const openapiSpecification = {
   },
   servers: [
     {
-      url: "/docs",
+      url: "/",
     },
   ],
   tags: [
@@ -138,7 +138,7 @@ export const openapiSpecification = {
     },
   },
   paths: {
-    "/login": {
+    "/users/login": {
       post: {
         tags: ["Autenticação"],
         summary: "Autentica um usuário e retorna um token JWT.",

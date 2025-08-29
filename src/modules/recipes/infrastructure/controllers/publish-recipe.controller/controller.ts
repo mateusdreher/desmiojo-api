@@ -6,10 +6,11 @@ export class PublishRecipeController {
   constructor(private readonly useCase: IUseCase<AuthorRecipeInputDTO, void>) {}
   async handle(request: Request, response: Response, next: NextFunction) {
     try {
-      const { authorId, recipeId } = request.body;
+      const { recipeId } = request.body;
+      const authorId = request.user?.userId;
 
       if (!authorId || !recipeId) {
-        response.status(400).send("Verify your payload");
+        return response.status(400).send("Verify your payload");
       }
 
       await this.useCase.execute({ authorId, recipeId });

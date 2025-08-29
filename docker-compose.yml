@@ -10,6 +10,7 @@ services:
     ports:
       - "5432:5432"
     volumes:
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
       - desmiojo-db-data:/var/lib/postgresql/data
 
   desmiojo-api:
@@ -27,8 +28,6 @@ services:
     volumes:
       - ./src:/app/src
       - ./prisma:/app/prisma
-
-    command: sh -c "npx prisma migrate deploy && npx prisma db seed && npm run start"
 
 volumes:
   desmiojo-db-data:

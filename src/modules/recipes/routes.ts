@@ -4,12 +4,13 @@ import { listByAuthorRecipeController } from "./infrastructure/controllers/list-
 import { deleteRecipeController } from "./infrastructure/controllers/delete-recipe.controller";
 import { publishRecipeController } from "./infrastructure/controllers/publish-recipe.controller";
 import { authMiddleware } from "../__shared__/infrastructure/http/middlewares/auth.middleware";
+import { JwtProvider } from "../users/infrastructure/providers/jwt.provider";
 
 const router = Router();
-
+const ensureAuthenticated = authMiddleware(new JwtProvider());
 router.post(
   "/",
-  authMiddleware,
+  ensureAuthenticated,
   (request: Request, response: Response, next: NextFunction) => {
     return createRecipeController.handle(request, response, next);
   },
@@ -17,6 +18,7 @@ router.post(
 
 router.get(
   "/author",
+  ensureAuthenticated,
   (request: Request, response: Response, next: NextFunction) => {
     return listByAuthorRecipeController.handle(request, response, next);
   },
@@ -24,6 +26,7 @@ router.get(
 
 router.delete(
   "/",
+  ensureAuthenticated,
   (request: Request, response: Response, next: NextFunction) => {
     return deleteRecipeController.handle(request, response, next);
   },
@@ -31,6 +34,7 @@ router.delete(
 
 router.post(
   "/publish",
+  ensureAuthenticated,
   (request: Request, response: Response, next: NextFunction) => {
     return publishRecipeController.handle(request, response, next);
   },

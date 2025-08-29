@@ -11,14 +11,12 @@ export class DeleteUseCase implements IUseCase<AuthorRecipeInputDTO, void> {
       input.recipeId,
     );
 
-    if (!isUserAuthor) {
-      throw new Error("User not author of this recipe");
-    }
-
     const isRecipeExists = await this.recipeRepository.getById(input.recipeId);
 
-    if (!isRecipeExists) {
-      throw new Error("Recipe does not exists");
+    if (!isUserAuthor || !isRecipeExists) {
+      throw new Error(
+        "User not author of this recipe or Recipe does not exists",
+      );
     }
 
     await this.recipeRepository.delete(input.recipeId);

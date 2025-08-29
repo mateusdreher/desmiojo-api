@@ -12,14 +12,12 @@ export class PublishrecipeUseCase
       input.recipeId,
     );
 
-    if (!isUserAuthor) {
-      throw new Error("User not author of this recipe");
-    }
-
     const recipe = await this.recipeRepository.getById(input.recipeId);
 
-    if (!recipe) {
-      throw new Error("Recipe does not exists");
+    if (!isUserAuthor || !recipe) {
+      throw new Error(
+        "User not author of this recipe or Recipe does not exists",
+      );
     }
 
     recipe.publish();

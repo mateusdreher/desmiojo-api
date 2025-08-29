@@ -19,7 +19,7 @@ export class LoginUseCase implements IUseCase<LoginInputDTO, LoginOutputDTO> {
 
   async execute(input: LoginInputDTO): Promise<LoginOutputDTO> {
     const user = await this.userRepository.getByLogin(input.login);
-
+    console.log(user);
     const isPasswordCorrect = user
       ? await user.isPasswordCorrect(input.password)
       : false;
@@ -28,7 +28,7 @@ export class LoginUseCase implements IUseCase<LoginInputDTO, LoginOutputDTO> {
       throw new InvalidCredentialsError();
     }
 
-    const token = await this.authProvider.generateToken({
+    const token = this.authProvider.generateToken({
       userId: user.id.value,
     });
 

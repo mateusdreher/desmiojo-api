@@ -6,13 +6,15 @@ export class ListByAuthorController {
   constructor(private readonly useCase: IUseCase<string, RecipeOutputDTO[]>) {}
   async handle(request: Request, response: Response, next: NextFunction) {
     try {
-      const authorId = request.query.q as string;
+      const authorId = request.user?.userId;
 
       if (!authorId) {
-        response.status(400).send("You must provde an author");
+        return response.status(400).send("You must provde an author");
       }
 
-      return await this.useCase.execute(authorId);
+      const recipes = await this.useCase.execute(authorId);
+
+      return response.status(200).send(recipes);
     } catch (error) {
       next(error);
     }

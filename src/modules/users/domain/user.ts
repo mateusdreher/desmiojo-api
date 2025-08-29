@@ -82,6 +82,7 @@ export class User {
     this._updatedAt = new Date();
   }
   public async isPasswordCorrect(plainTextPassword: string): Promise<boolean> {
+    Password.createFromHash(plainTextPassword);
     return this._password.compare(plainTextPassword);
   }
 }

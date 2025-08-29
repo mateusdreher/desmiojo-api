@@ -12,9 +12,11 @@ export class PrismaRecipeRepository implements IRecipeRepository {
 
   async save(recipe: Recipe) {
     const persistenceData = RecipeMapper.toSchema(recipe);
-
+    console.log("\n\n");
+    console.log(persistenceData);
+    console.log("\n\n");
     await this.prisma.recipe.upsert({
-      where: { id: recipe.id.toString() },
+      where: { id: recipe.id.value },
       create: persistenceData,
       update: {
         ...persistenceData,
@@ -35,7 +37,7 @@ export class PrismaRecipeRepository implements IRecipeRepository {
   }
   async getByAuthorAndId(authorId: string, id: string): Promise<Recipe | null> {
     const rawRecipe = await this.prisma.recipe.findFirst({
-      where: { authorId, id },
+      where: { id, authorId },
     });
 
     if (!rawRecipe) return null;

@@ -6,8 +6,8 @@ export type RecipeStatusType = "draft" | "published";
 
 type RecipeProps = {
   id: RecipeID;
-  category: number;
-  author: AuthorID;
+  categoryId: number;
+  authorId: AuthorID;
   title: string;
   preparation_time_minutes: number;
   servings: number;
@@ -20,8 +20,8 @@ type RecipeProps = {
 
 export class Recipe {
   public readonly id: RecipeID;
-  public readonly author: AuthorID;
-  private _category: number;
+  public readonly authorId: AuthorID;
+  private _categoryId: number;
   private _title: string;
   private _preparation_time_minutes: number;
   private _servings: number;
@@ -33,8 +33,8 @@ export class Recipe {
 
   private constructor(init: RecipeProps) {
     this.id = init.id;
-    this.author = init.author;
-    this._category = init.category;
+    this.authorId = init.authorId;
+    this._categoryId = init.categoryId;
     this._title = init.title;
     this._preparation_method = init.preparation_method;
     this._preparation_time_minutes = init.preparation_time_minutes;
@@ -45,8 +45,8 @@ export class Recipe {
     this._updatedAt = init.updatedAt;
   }
 
-  public get category(): number {
-    return this._category;
+  public get categoryId(): number {
+    return this._categoryId;
   }
   public get title(): string {
     return this._title;
@@ -74,8 +74,8 @@ export class Recipe {
   }
 
   public static async create(props: {
-    category: number;
-    author: AuthorID;
+    categoryId: number;
+    authorId: AuthorID;
     title: string;
     preparation_time_minutes: number;
     servings: number;
@@ -84,10 +84,10 @@ export class Recipe {
     status?: RecipeStatusType;
   }): Promise<Recipe> {
     return new Recipe({
-      id: new RecipeID(props.title),
-      category: props.category,
+      id: new RecipeID(),
+      categoryId: props.categoryId,
       title: props.title,
-      author: props.author,
+      authorId: props.authorId,
       preparation_time_minutes: props.preparation_time_minutes,
       preparation_method: props.preparation_method,
       ingredients: props.ingredients || [],
@@ -100,9 +100,9 @@ export class Recipe {
 
   public static load(props: {
     id: RecipeID;
-    category: number;
+    categoryId: number;
     title: string;
-    author: AuthorID;
+    authorId: AuthorID;
     preparation_time_minutes: number;
     servings: number;
     preparation_method: string;
@@ -115,8 +115,12 @@ export class Recipe {
   }
 
   public publish() {
-    if ((this._ingredients, length === 0)) {
+    if (this._ingredients.length === 0) {
       throw new Error("Cannot publish a recipe without ingredients");
+    }
+    if (this.status === "published") {
+      console.log("HEREaaaaa");
+      throw new Error("Recipe already published");
     }
 
     this._status = "published";
@@ -129,7 +133,7 @@ export class Recipe {
     this._updatedAt = new Date();
   }
   public changeCategory(newCategory: number) {
-    this._category = newCategory;
+    this._categoryId = newCategory;
     this._updatedAt = new Date();
   }
 
@@ -138,7 +142,7 @@ export class Recipe {
     this._updatedAt = new Date();
   }
   public changePreparationtime(newTime: number) {
-    this.preparation_time_minutes - newTime;
+    this._preparation_time_minutes = newTime;
     this._updatedAt = new Date();
   }
   public changeServings(newServings: number) {

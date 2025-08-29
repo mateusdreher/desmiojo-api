@@ -11,8 +11,7 @@ export class CreateRecipeController {
   async handle(request: Request, response: Response, next: NextFunction) {
     try {
       const {
-        category,
-        author,
+        categoryId,
         title,
         preparation_time_minutes,
         servings,
@@ -21,20 +20,20 @@ export class CreateRecipeController {
       } = request.body;
 
       if (
-        !category ||
-        !author ||
+        !categoryId ||
         !title ||
         !preparation_time_minutes ||
         !servings ||
         !preparation_method ||
-        !ingredients
+        !ingredients ||
+        !request.user?.userId
       ) {
-        response.status(400).send("Review your payload");
+        return response.status(400).send("Review your payload");
       }
 
       await this.useCase.execute({
-        category,
-        author,
+        categoryId,
+        authorId: request.user?.userId,
         title,
         preparation_time_minutes,
         servings,

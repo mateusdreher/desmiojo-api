@@ -12,7 +12,7 @@ export class InvalidTokenError extends Error {
   }
 }
 
-export class AuthProvider implements IAuthProvider {
+export class JwtProvider implements IAuthProvider {
   private readonly JWT_SECRET =
     process.env.JWT_SECRET || "your-super-secret-key";
   private readonly JWT_EXPIRES_IN = "1h";

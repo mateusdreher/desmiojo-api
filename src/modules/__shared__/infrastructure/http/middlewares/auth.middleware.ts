@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from "express";
 import { IAuthProvider } from "../../../../users/application/interfaces/auth.provider.interface";
-import { InvalidTokenError } from "../../../../users/infrastructure/providers/auth.provider";
+import { InvalidTokenError } from "../../../../users/infrastructure/providers/jwt.provider";
 
 export const authMiddleware =
   (authProvider: IAuthProvider) =>
@@ -9,6 +9,7 @@ export const authMiddleware =
     response: Response,
     next: NextFunction,
   ): Promise<void | Response> => {
+    console.log("HERE");
     const authHeader = request.headers.authorization;
 
     if (!authHeader) {
