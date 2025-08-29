@@ -61,22 +61,36 @@ export const openapiSpecification = {
         type: "object",
         properties: {
           name: { type: "string", example: "Farinha de trigo" },
-          quantity: { type: "string", example: "2 xícaras" },
+          quantity: { type: "number", example: 2 },
+          unit: { type: "string", example: "ml" },
         },
       },
       CreateRecipeInput: {
         type: "object",
-        required: ["title", "description", "ingredients"],
+        required: [
+          "title",
+          "ingredients",
+          "preparation_time_minutes",
+          "preparation_method",
+          "servings",
+          "categoryId",
+        ],
         properties: {
           title: { type: "string", example: "Bolo de Chocolate" },
-          description: {
-            type: "string",
-            example: "Um bolo de chocolate fofinho e delicioso.",
-          },
           ingredients: {
             type: "array",
             items: { $ref: "#/components/schemas/Ingredient" },
           },
+          preparation_method: {
+            type: "string",
+            example: "Poe no fogo né bicho",
+          },
+          preparation_time_minutes: {
+            type: "number",
+            example: 10,
+          },
+          servings: { type: "number", example: 5 },
+          categoryId: { type: "number", example: 2 },
         },
       },
       RecipeOutput: {
