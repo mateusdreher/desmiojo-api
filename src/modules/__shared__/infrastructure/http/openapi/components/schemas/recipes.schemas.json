@@ -1,0 +1,93 @@
+{
+  "Ingredient": {
+    "type": "object",
+    "properties": {
+      "name": { "type": "string", "example": "Farinha de trigo" },
+      "quantity": { "type": "number", "example": 2 },
+      "unit": { "type": "string", "example": "ml" }
+    }
+  },
+  "CreateRecipeInput": {
+    "type": "object",
+    "required": [
+      "title",
+      "ingredients",
+      "preparation_time_minutes",
+      "preparation_method",
+      "servings",
+      "categoryId"
+    ],
+    "properties": {
+      "title": { "type": "string", "example": "Bolo de Chocolate" },
+      "ingredients": {
+        "type": "array",
+        "items": { "$ref": "#/components/schemas/Ingredient" }
+      },
+      "preparation_method": {
+        "type": "string",
+        "example": "Poe no fogo né bicho"
+      },
+      "preparation_time_minutes": { "type": "number", "example": 10 },
+      "servings": { "type": "number", "example": 5 },
+      "categoryId": { "type": "number", "example": 2 }
+    }
+  },
+  "UpdateRecipeInput": {
+    "type": "object",
+    "properties": {
+      "title": { "type": "string", "example": "Bolo de Chocolate" },
+      "ingredients": {
+        "type": "array",
+        "items": { "$ref": "#/components/schemas/Ingredient" }
+      },
+      "preparation_method": {
+        "type": "string",
+        "example": "Poe no fogo né bicho"
+      },
+      "preparation_time_minutes": { "type": "number", "example": 10 },
+      "servings": { "type": "number", "example": 5 },
+      "categoryId": { "type": "number", "example": 2 }
+    }
+  },
+  "RecipeOutput": {
+    "type": "object",
+    "properties": {
+      "id": { "type": "string", "format": "uuid" },
+      "authorId": { "type": "string", "format": "uuid" },
+      "title": { "type": "string" },
+      "ingredients": {
+        "type": "array",
+        "items": { "$ref": "#/components/schemas/Ingredient" }
+      },
+      "status": {
+        "type": "string",
+        "enum": ["draft", "published"],
+        "example": "draft"
+      },
+      "createdAt": { "type": "string", "format": "date-time" },
+      "updatedAt": { "type": "string", "format": "date-time" }
+    }
+  },
+  "DeleteRecipeInput": {
+    "type": "object",
+    "required": ["recipeId"],
+    "properties": {
+      "recipeId": {
+        "type": "string",
+        "format": "uuid",
+        "description": "ID da receita a ser deletada."
+      }
+    }
+  },
+  "PublishRecipeInput": {
+    "type": "object",
+    "required": ["recipeId"],
+    "properties": {
+      "recipeId": {
+        "type": "string",
+        "format": "uuid",
+        "description": "ID da receita a ser publicada."
+      }
+    }
+  }
+}

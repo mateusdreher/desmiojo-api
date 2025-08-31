@@ -1,0 +1,14 @@
+[
+  {
+    "name": "Autenticação",
+    "description": "Endpoints para login e gerenciamento de sessão."
+  },
+  {
+    "name": "Usuários",
+    "description": "Endpoints para operações relacionadas a usuários."
+  },
+  {
+    "name": "Receitas",
+    "description": "Endpoints para criar, listar e gerenciar receitas."
+  }
+]

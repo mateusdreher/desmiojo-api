@@ -1,0 +1,279 @@
+{
+  "/recipes": {
+    "post": {
+      "tags": ["Receitas"],
+      "summary": "Cria uma nova receita.",
+      "security": [{ "bearerAuth": [] }],
+      "requestBody": {
+        "required": true,
+        "content": {
+          "application/json": {
+            "schema": { "$ref": "#/components/schemas/CreateRecipeInput" }
+          }
+        }
+      },
+      "responses": {
+        "201": {
+          "description": "Receita criada com sucesso.",
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/RecipeOutput" }
+            }
+          }
+        },
+        "400": {
+          "description": "Dados inválidos.",
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/ErrorOutput" }
+            }
+          }
+        },
+        "401": {
+          "description": "Não autorizado.",
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/ErrorOutput" }
+            }
+          }
+        }
+      }
+    },
+    "patch": {
+      "tags": ["Receitas"],
+      "summary": "Atualiza uma receita existente.",
+      "description": "Permite a atualização parcial dos dados de uma receita. Apenas o autor pode atualizar.",
+      "security": [{ "bearerAuth": [] }],
+      "requestBody": {
+        "required": true,
+        "content": {
+          "application/json": {
+            "schema": { "$ref": "#/components/schemas/UpdateRecipeInput" }
+          }
+        }
+      },
+      "responses": {
+        "200": {
+          "description": "Receita atualizada com sucesso.",
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/RecipeOutput" }
+            }
+          }
+        },
+        "400": {
+          "description": "Dados inválidos.",
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/ErrorOutput" }
+            }
+          }
+        },
+        "401": {
+          "description": "Não autorizado.",
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/ErrorOutput" }
+            }
+          }
+        },
+        "403": {
+          "description": "Acesso proibido (usuário não é o autor).",
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/ErrorOutput" }
+            }
+          }
+        },
+        "404": {
+          "description": "Receita não encontrada.",
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/ErrorOutput" }
+            }
+          }
+        }
+      }
+    },
+    "delete": {
+      "tags": ["Receitas"],
+      "summary": "Deleta uma receita existente.",
+      "description": "Apenas o autor da receita pode deletá-la.",
+      "security": [{ "bearerAuth": [] }],
+      "requestBody": {
+        "required": true,
+        "content": {
+          "application/json": {
+            "schema": { "$ref": "#/components/schemas/DeleteRecipeInput" }
+          }
+        }
+      },
+      "responses": {
+        "204": {
+          "description": "Receita deletada com sucesso (sem conteúdo de resposta)."
+        },
+        "401": {
+          "description": "Não autorizado.",
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/ErrorOutput" }
+            }
+          }
+        },
+        "403": {
+          "description": "Acesso proibido (usuário não é o autor).",
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/ErrorOutput" }
+            }
+          }
+        },
+        "404": {
+          "description": "Receita não encontrada.",
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/ErrorOutput" }
+            }
+          }
+        }
+      }
+    }
+  },
+  "/recipes/author": {
+    "get": {
+      "tags": ["Receitas"],
+      "summary": "Lista as receitas de um autor específico.",
+      "parameters": [
+        {
+          "name": "authorId",
+          "in": "query",
+          "required": true,
+          "description": "O ID do autor para buscar as receitas.",
+          "schema": { "type": "string", "format": "uuid" }
+        }
+      ],
+      "responses": {
+        "200": {
+          "description": "Uma lista de receitas.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "array",
+                "items": { "$ref": "#/components/schemas/RecipeOutput" }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "/recipes/publish": {
+    "post": {
+      "tags": ["Receitas"],
+      "summary": "Publica uma receita que está em rascunho.",
+      "description": "Muda o status de uma receita de 'draft' para 'published'. Apenas o autor pode fazer isso.",
+      "security": [{ "bearerAuth": [] }],
+      "requestBody": {
+        "required": true,
+        "content": {
+          "application/json": {
+            "schema": { "$ref": "#/components/schemas/PublishRecipeInput" }
+          }
+        }
+      },
+      "responses": {
+        "200": {
+          "description": "Receita publicada com sucesso.",
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/RecipeOutput" }
+            }
+          }
+        },
+        "401": {
+          "description": "Não autorizado.",
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/ErrorOutput" }
+            }
+          }
+        },
+        "403": {
+          "description": "Acesso proibido (usuário não é o autor).",
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/ErrorOutput" }
+            }
+          }
+        },
+        "404": {
+          "description": "Receita não encontrada.",
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/ErrorOutput" }
+            }
+          }
+        },
+        "409": {
+          "description": "Conflito (ex: receita já está publicada).",
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/ErrorOutput" }
+            }
+          }
+        }
+      }
+    }
+  },
+  "/recipes/{recipeId}/download": {
+    "get": {
+      "tags": ["Receitas"],
+      "summary": "Gera e faz o download de uma receita em formato PDF.",
+      "description": "Retorna um arquivo PDF para download. Requer autenticação.",
+      "security": [{ "bearerAuth": [] }],
+      "parameters": [
+        {
+          "name": "recipeId",
+          "in": "path",
+          "required": true,
+          "description": "O ID da receita para gerar o PDF.",
+          "schema": { "type": "string", "format": "uuid" }
+        }
+      ],
+      "responses": {
+        "200": {
+          "description": "Download do PDF da receita iniciado.",
+          "content": {
+            "application/pdf": {
+              "schema": { "type": "string", "format": "binary" }
+            }
+          }
+        },
+        "401": {
+          "description": "Não autorizado.",
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/ErrorOutput" }
+            }
+          }
+        },
+        "403": {
+          "description": "Acesso proibido.",
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/ErrorOutput" }
+            }
+          }
+        },
+        "404": {
+          "description": "Receita não encontrada.",
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/ErrorOutput" }
+            }
+          }
+        }
+      }
+    }
+  }
+}

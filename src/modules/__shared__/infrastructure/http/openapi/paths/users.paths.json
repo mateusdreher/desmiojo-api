@@ -1,0 +1,58 @@
+{
+  "/users": {
+    "post": {
+      "tags": ["Usuários"],
+      "summary": "Cria um novo usuário.",
+      "requestBody": {
+        "required": true,
+        "content": {
+          "application/json": {
+            "schema": { "$ref": "#/components/schemas/CreateUserInput" }
+          }
+        }
+      },
+      "responses": {
+        "201": {
+          "description": "Usuário criado com sucesso.",
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/UserOutput" }
+            }
+          }
+        }
+      }
+    }
+  },
+  "/users/login": {
+    "post": {
+      "tags": ["Autenticação"],
+      "summary": "Autentica um usuário e retorna um token JWT.",
+      "requestBody": {
+        "required": true,
+        "content": {
+          "application/json": {
+            "schema": { "$ref": "#/components/schemas/LoginInput" }
+          }
+        }
+      },
+      "responses": {
+        "200": {
+          "description": "Autenticação bem-sucedida.",
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/LoginOutput" }
+            }
+          }
+        },
+        "401": {
+          "description": "Credenciais inválidas.",
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/ErrorOutput" }
+            }
+          }
+        }
+      }
+    }
+  }
+}

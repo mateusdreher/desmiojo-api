@@ -10,9 +10,9 @@ const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
-app.use("/", healthRouter);
-app.use("/users", userRouter);
-app.use("/recipes", recipeRouter);
+app.use("/api", healthRouter);
+app.use("/api/users", userRouter);
+app.use("/api/recipes", recipeRouter);
 app.use(
   "/docs",
   apiReference({

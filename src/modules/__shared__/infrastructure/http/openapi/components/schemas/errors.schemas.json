@@ -1,0 +1,9 @@
+{
+  "ErrorOutput": {
+    "type": "object",
+    "properties": {
+      "name": { "type": "string" },
+      "message": { "type": "string" }
+    }
+  }
+}
