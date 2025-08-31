@@ -455,5 +455,68 @@ export const openapiSpecification = {
         },
       },
     },
+    "/recipes/{recipeId}/download": {
+      get: {
+        tags: ["Receitas"],
+        summary: "Gera e faz o download de uma receita em formato PDF.",
+        description:
+          "Retorna um arquivo PDF para download. Requer autenticação, pois a permissão para baixar rascunhos é verificada.",
+        security: [
+          {
+            bearerAuth: [],
+          },
+        ],
+        parameters: [
+          {
+            name: "recipeId",
+            in: "path",
+            required: true,
+            description: "O ID da receita para gerar o PDF.",
+            schema: {
+              type: "string",
+              format: "uuid",
+            },
+          },
+        ],
+        responses: {
+          "200": {
+            description: "Download do PDF da receita iniciado.",
+            content: {
+              "application/pdf": {
+                schema: {
+                  type: "string",
+                  format: "binary",
+                },
+              },
+            },
+          },
+          "401": {
+            description: "Não autorizado (token inválido ou não fornecido).",
+            content: {
+              "application/json": {
+                schema: { $ref: "#/components/schemas/ErrorOutput" },
+              },
+            },
+          },
+          "403": {
+            description:
+              "Acesso proibido (ex: tentar baixar uma receita em rascunho de outro autor).",
+            content: {
+              "application/json": {
+                schema: { $ref: "#/components/schemas/ErrorOutput" },
+              },
+            },
+          },
+          "404": {
+            description: "Receita não encontrada.",
+            content: {
+              "application/json": {
+                schema: { $ref: "#/components/schemas/ErrorOutput" },
+              },
+            },
+          },
+        },
+      },
+    },
   },
 };

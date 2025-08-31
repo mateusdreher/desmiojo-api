@@ -1,5 +1,6 @@
 import { UserID as AuthorID } from "../../users";
 import { IngredientsInputType } from "../application/dtos/ingredients.input.type";
+import { recipeRouter } from "../routes";
 import { Ingredient } from "./vo/ingredient.vo";
 import { RecipeID } from "./vo/recipe-id.vo";
 
@@ -120,7 +121,6 @@ export class Recipe {
       throw new Error("Cannot publish a recipe without ingredients");
     }
     if (this.status === "published") {
-      console.log("HEREaaaaa");
       throw new Error("Recipe already published");
     }
 
@@ -153,5 +153,9 @@ export class Recipe {
   public changeIngredients(newIngredients: IngredientsInputType[]) {
     this._ingredients = newIngredients;
     this._updatedAt = new Date();
+  }
+
+  public isPublished(): boolean {
+    return !!(this._status === "published");
   }
 }

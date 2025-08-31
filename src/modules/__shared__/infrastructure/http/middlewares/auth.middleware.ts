@@ -9,7 +9,6 @@ export const authMiddleware =
     response: Response,
     next: NextFunction,
   ): Promise<void | Response> => {
-    console.log("HERE");
     const authHeader = request.headers.authorization;
 
     if (!authHeader) {
