@@ -8,11 +8,6 @@ export class RecipeMapper {
   public static toDomain(raw: PrismaRecipe): Recipe {
     const id = new RecipeID(raw.id);
     const authorId = new AuthorID(raw.authorId);
-    console.log("\n\nVVVVVVVV");
-    console.log(raw.ingredients);
-    console.log(raw.ingredients.replace("},", "},@").split(",@"));
-    console.log("\n\nVVVVVVVV");
-    console.log("\n\nVVVVVVVV");
     const ingredientsSplited = raw.ingredients.replace("},", "},@").split(",@");
     const ingredients = ingredientsSplited.map((item: string) =>
       Ingredient.load(item),
@@ -34,9 +29,6 @@ export class RecipeMapper {
   }
 
   public static toSchema(entity: Recipe): Prisma.RecipeUncheckedCreateInput {
-    console.log("\n\nENTITY");
-    console.log(entity);
-    console.log("\n\n");
     return {
       id: entity.id.value,
       authorId: entity.authorId.value,

@@ -49,12 +49,20 @@ export const openapiSpecification = {
           refreshToken: { type: "string" },
         },
       },
+      CreateUserInput: {
+        type: "object",
+        properties: {
+          name: { type: "string" },
+          login: { type: "string" },
+          textPassword: { type: "string" },
+        },
+      },
       UserOutput: {
         type: "object",
         properties: {
           id: { type: "string", format: "uuid" },
           name: { type: "string" },
-          email: { type: "string", format: "email" },
+          login: { type: "string" },
         },
       },
       Ingredient: {
@@ -173,6 +181,34 @@ export const openapiSpecification = {
     },
   },
   paths: {
+    users: {
+      post: {
+        tags: ["Usuário"],
+        summary: "Cria um novo usuário.",
+        requestBody: {
+          required: true,
+          content: {
+            "application/json": {
+              schema: {
+                $ref: "#/components/schemas/CreateUserInput",
+              },
+            },
+          },
+        },
+        responses: {
+          "200": {
+            description: "Usuário criado com sucesso.",
+            content: {
+              "application/json": {
+                schema: {
+                  $ref: "#/components/schemas/UserOutput",
+                },
+              },
+            },
+          },
+        },
+      },
+    },
     "/users/login": {
       post: {
         tags: ["Autenticação"],

@@ -31,6 +31,9 @@ export class User {
   public get login(): string {
     return this._login;
   }
+  public get password(): string {
+    return this._password.get();
+  }
   public get createdAt(): Date {
     return this._createdAt;
   }

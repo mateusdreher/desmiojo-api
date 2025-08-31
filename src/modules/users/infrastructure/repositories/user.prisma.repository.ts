@@ -10,6 +10,18 @@ export class UserPrismaRepository implements IUserRepository {
     this.prisma = new PrismaClient();
   }
 
+  async save(user: User): Promise<void> {
+    const persistenceData = UserMapper.toSchema(user);
+    await this.prisma.user.upsert({
+      where: { id: user.id.value },
+      create: persistenceData,
+      update: {
+        ...persistenceData,
+        createdAt: undefined,
+      },
+    });
+  }
+
   async getByLogin(login: string): Promise<User | null> {
     const rawUser = await this.prisma.user.findFirst({ where: { login } });
 

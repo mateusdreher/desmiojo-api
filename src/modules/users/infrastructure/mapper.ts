@@ -1,4 +1,4 @@
-import { User as PrismaUser } from "@prisma/client";
+import { Prisma, User as PrismaUser } from "@prisma/client";
 import { User } from "../domain/user";
 import { UserID } from "../domain/vo/user-id.vo";
 
@@ -12,5 +12,16 @@ export class UserMapper {
       createdAt: raw.createdAt,
       updatedAt: raw.updatedAt,
     });
+  }
+
+  public static toSchema(user: User): Prisma.UserUncheckedCreateInput {
+    return {
+      id: user.id.value,
+      name: user.name,
+      login: user.login,
+      password: user.password,
+      createdAt: user.createdAt,
+      updatedAt: user.updatedAt,
+    };
   }
 }
