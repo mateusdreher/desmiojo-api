@@ -18,7 +18,7 @@ export class LoginController {
 
       const token = await this.useCase.execute({ login, password });
 
-      response.status(200).json({ token });
+      response.status(200).json(token);
     } catch (error) {
       next(error);
     }

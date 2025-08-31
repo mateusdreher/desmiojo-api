@@ -20,16 +20,10 @@ export class Ingredient {
   }
 
   public static create(props: IngredientType) {
-    console.log("\n\nINGREDIENT");
-    console.log(props);
-    console.log("\n\n");
-
     return new Ingredient(props);
   }
 
   public static load(props: string): Ingredient {
-    //console.log("ARRUMAR");
-    //console.log(props.split("},"));
     const { name, quantity, unit } = JSON.parse(props);
     return new Ingredient({
       name,

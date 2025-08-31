@@ -35,8 +35,6 @@ export class UpdateRecipeController {
         ingredients,
       });
 
-      console.log("\n\nCONTROLLER", recipe);
-
       response.status(200).json(recipe);
     } catch (error) {
       next(error);
