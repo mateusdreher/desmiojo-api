@@ -1,22 +1,25 @@
 import { IUseCase } from "../../../__shared__/application/interfaces/use-case.interface";
+import { UserID as AuthorID } from "../../../users";
 import { AuthorRecipeInputDTO } from "../dtos/author-recipe.input.dto";
+import {
+  ForbiddenAccessError,
+  RecipeNotFoundError,
+} from "../errors/recipe.errors";
 import { IRecipeRepository } from "../interfaces/recipe.repository.interface";
 
 export class DeleteUseCase implements IUseCase<AuthorRecipeInputDTO, void> {
   constructor(private readonly recipeRepository: IRecipeRepository) {}
 
   async execute(input: AuthorRecipeInputDTO) {
-    const isUserAuthor = await this.recipeRepository.getByAuthorAndId(
-      input.authorId,
-      input.recipeId,
-    );
+    const recipe = await this.recipeRepository.getById(input.recipeId);
 
-    const isRecipeExists = await this.recipeRepository.getById(input.recipeId);
+    if (!recipe) {
+      throw new RecipeNotFoundError(input.recipeId);
+    }
 
-    if (!isUserAuthor || !isRecipeExists) {
-      throw new Error(
-        "User not author of this recipe or Recipe does not exists",
-      );
+    const authorId = new AuthorID(input.authorId);
+    if (!recipe.authorId.equals(authorId)) {
+      throw new ForbiddenAccessError("Only author can delete this recipe");
     }
 
     await this.recipeRepository.delete(input.recipeId);

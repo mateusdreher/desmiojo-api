@@ -4,6 +4,13 @@ import { CreateUserInputDTO } from "../dtos/create-user.input.dto";
 import { UserOutputDTO } from "../dtos/user.output.dto";
 import { IUserRepository } from "../interfaces/user.repository.interface";
 
+export class AlreadyExistsUserWithLoginError extends Error {
+  constructor() {
+    super("Already exists an user with this login");
+    this.name = "AlreadyExistsUserWithLoginError";
+  }
+}
+
 export class CreateUserUseCase
   implements IUseCase<CreateUserInputDTO, UserOutputDTO>
 {
@@ -15,7 +22,7 @@ export class CreateUserUseCase
     );
 
     if (alreadyExistsUserWithLogin) {
-      throw new Error("Already exists an user with this login");
+      throw new AlreadyExistsUserWithLoginError();
     }
     await this.userRepository.save(newUser);
 

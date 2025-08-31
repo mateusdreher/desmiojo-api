@@ -3,9 +3,12 @@ import { IRecipeRepository } from "../interfaces/recipe.repository.interface";
 import { IUseCase } from "../../../__shared__/application/interfaces/use-case.interface";
 import { AuthorRecipeInputDTO } from "../dtos/author-recipe.input.dto";
 import { GenerateRecipePdfOutputDTO } from "../dtos/generate-recipe-pdf.output.dto";
-import { RecipeID } from "../../domain/vo/recipe-id.vo";
 import { UserID as AuthorID } from "../../../users";
 import { getRecipeHtmlTemplate } from "../templates/recipe-tempalte";
+import {
+  ForbiddenAccessError,
+  RecipeNotFoundError,
+} from "../errors/recipe.errors";
 
 export class GenerateRecipePdfUseCase
   implements IUseCase<AuthorRecipeInputDTO, GenerateRecipePdfOutputDTO>
@@ -18,19 +21,15 @@ export class GenerateRecipePdfUseCase
   async execute(
     input: AuthorRecipeInputDTO,
   ): Promise<GenerateRecipePdfOutputDTO> {
-    const recipeId = new RecipeID(input.recipeId);
-    const authorId = new AuthorID(input.authorId);
-
-    const recipe = await this.recipeRepository.getByAuthorAndId(
-      input.authorId,
-      input.recipeId,
-    );
+    const recipe = await this.recipeRepository.getById(input.recipeId);
     if (!recipe) {
-      throw new Error(
-        "User not author of this recipe or Recipe does not exists",
-      );
+      throw new RecipeNotFoundError(input.recipeId);
     }
 
+    const authorId = new AuthorID(input.authorId);
+    if (!recipe.authorId.equals(authorId)) {
+      throw new ForbiddenAccessError("Only author can print this recipe");
+    }
     if (!recipe.isPublished()) {
       throw new Error("Only can download a published recipe");
     }

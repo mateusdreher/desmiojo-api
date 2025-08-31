@@ -1,5 +1,10 @@
 import { IUseCase } from "../../../__shared__/application/interfaces/use-case.interface";
+import { UserID as AuthorID } from "../../../users";
 import { AuthorRecipeInputDTO } from "../dtos/author-recipe.input.dto";
+import {
+  ForbiddenAccessError,
+  RecipeNotFoundError,
+} from "../errors/recipe.errors";
 import { IRecipeRepository } from "../interfaces/recipe.repository.interface";
 
 export class PublishrecipeUseCase
@@ -7,17 +12,14 @@ export class PublishrecipeUseCase
 {
   constructor(private readonly recipeRepository: IRecipeRepository) {}
   async execute(input: AuthorRecipeInputDTO): Promise<void> {
-    const isUserAuthor = await this.recipeRepository.getByAuthorAndId(
-      input.authorId,
-      input.recipeId,
-    );
-
     const recipe = await this.recipeRepository.getById(input.recipeId);
 
-    if (!isUserAuthor || !recipe) {
-      throw new Error(
-        "User not author of this recipe or Recipe does not exists",
-      );
+    if (!recipe) {
+      throw new RecipeNotFoundError(input.recipeId);
+    }
+    const authorId = new AuthorID(input.authorId);
+    if (!recipe.authorId.equals(authorId)) {
+      throw new ForbiddenAccessError("Only author can publish this recipe");
     }
 
     recipe.publish();

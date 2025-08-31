@@ -1,10 +1,22 @@
 import { UserID as AuthorID } from "../../users";
 import { IngredientsInputType } from "../application/dtos/ingredients.input.type";
-import { recipeRouter } from "../routes";
 import { Ingredient } from "./vo/ingredient.vo";
 import { RecipeID } from "./vo/recipe-id.vo";
 
 export type RecipeStatusType = "draft" | "published";
+
+export class RecipeAlreadyPublishedError extends Error {
+  constructor() {
+    super("Recipe already published");
+    this.name = "RecipeAlreadyPublishedError";
+  }
+}
+export class CannotPublishWithNoIngredientsError extends Error {
+  constructor() {
+    super("Cannot publish a recipe without ingredients");
+    this.name = "CannotPublishWithNoIngredientsError";
+  }
+}
 
 type RecipeProps = {
   id: RecipeID;
@@ -118,10 +130,10 @@ export class Recipe {
 
   public publish() {
     if (this._ingredients.length === 0) {
-      throw new Error("Cannot publish a recipe without ingredients");
+      throw new CannotPublishWithNoIngredientsError();
     }
-    if (this.status === "published") {
-      throw new Error("Recipe already published");
+    if (this.isPublished()) {
+      throw new RecipeAlreadyPublishedError();
     }
 
     this._status = "published";

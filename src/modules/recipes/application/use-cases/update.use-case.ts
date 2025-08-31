@@ -3,7 +3,12 @@ import { RecipeStatusType } from "../../domain";
 import { Ingredient } from "../../domain/vo/ingredient.vo";
 import { RecipeOutputDTO } from "../dtos/recipe.output.dto";
 import { UpdateRecipeInputDTO } from "../dtos/update.input.dto";
+import {
+  ForbiddenAccessError,
+  RecipeNotFoundError,
+} from "../errors/recipe.errors";
 import { IRecipeRepository } from "../interfaces/recipe.repository.interface";
+import { UserID as AuthorID } from "../../../users";
 
 export class UptadeRecipeUseCase
   implements IUseCase<UpdateRecipeInputDTO, RecipeOutputDTO>
@@ -11,15 +16,14 @@ export class UptadeRecipeUseCase
   constructor(private readonly recipeRepository: IRecipeRepository) {}
 
   async execute(input: UpdateRecipeInputDTO): Promise<RecipeOutputDTO> {
-    const recipe = await this.recipeRepository.getByAuthorAndId(
-      input.authorId,
-      input.id,
-    );
+    const recipe = await this.recipeRepository.getById(input.id);
 
     if (!recipe) {
-      throw new Error(
-        "User not author of this recipe or Recipe does not exists",
-      );
+      throw new RecipeNotFoundError(input.id);
+    }
+    const authorId = new AuthorID(input.authorId);
+    if (!recipe.authorId.equals(authorId)) {
+      throw new ForbiddenAccessError("Only author can publish this recipe");
     }
 
     if (input.preparation_method) {

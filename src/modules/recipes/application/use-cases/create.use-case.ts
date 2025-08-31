@@ -2,7 +2,6 @@ import { IUseCase } from "../../../__shared__/application/interfaces/use-case.in
 import { UserID as AuthorID } from "../../../users";
 import { Recipe } from "../../domain";
 import { Ingredient } from "../../domain/vo/ingredient.vo";
-import { RecipeID } from "../../domain/vo/recipe-id.vo";
 import { CreateRecipeInputDTO } from "../dtos/create.input.dto";
 import { RecipeOutputDTO } from "../dtos/recipe.output.dto";
 import { IRecipeRepository } from "../interfaces/recipe.repository.interface";

@@ -1,1 +1,6 @@
-export { RecipeStatusType, Recipe } from "./recipe";
+export {
+  RecipeStatusType,
+  Recipe,
+  CannotPublishWithNoIngredientsError,
+  RecipeAlreadyPublishedError,
+} from "./recipe";

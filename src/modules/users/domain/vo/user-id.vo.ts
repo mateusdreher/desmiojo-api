@@ -14,6 +14,6 @@ export class UserID {
     if (!(id instanceof this.constructor)) {
       return false;
     }
-    return id.toString() === this.value;
+    return id.value === this.value;
   }
 }
