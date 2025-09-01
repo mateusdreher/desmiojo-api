@@ -43,14 +43,14 @@ Antes de começar, garanta que você tenha as seguintes ferramentas instaladas n
     # .env.example
 
     # Configurações da Aplicação
-    PORT=3333
+    PORT=
     JWT_SECRET="seu-segredo-super-secreto-que-sera-mudado-em-producao"
 
     # URL de Conexão com o Banco de Dados (usada pelo Prisma e pela API)
     # Esta URL é para o ambiente Docker Compose
     DATABASE_URL=""
     ```
-    **Importante:** Substitua as variaveis de ambiente pelas que foram encaminhadas via e-mail.
+    **Importante:** Preecha apenas com o segredo JWT quedeve ser único e secreto, as demais pode ser mantidas as mesmas.
 
 ## 📦 Instalação
 
