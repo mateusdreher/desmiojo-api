@@ -28,8 +28,8 @@ Antes de começar, garanta que você tenha as seguintes ferramentas instaladas n
 
 1.  **Clonar o Repositório (se aplicável):**
     ```bash
-    git clone <url-do-seu-repositorio>
-    cd <nome-do-repositorio>
+    git clone git@github.com:mateusdreher/desmiojo-api.git
+    cd desmiojo-api
     ```
 
 2.  **Variáveis de Ambiente:**
