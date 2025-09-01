@@ -167,6 +167,33 @@
       }
     }
   },
+  "/recipes/{recipeId}": {
+    "get": {
+      "tags": ["Receitas"],
+      "summary": "Buscar receita por id",
+      "parameters": [
+        {
+          "name": "recipeId",
+          "in": "path",
+          "required": true,
+          "description": "O ID da receita",
+          "schema": { "type": "string", "format": "uuid" }
+        }
+      ],
+      "responses": {
+        "200": {
+          "description": "Uma receita",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RecipeOutput"
+              }
+            }
+          }
+        }
+      }
+    }
+  },
   "/recipes/publish": {
     "post": {
       "tags": ["Receitas"],

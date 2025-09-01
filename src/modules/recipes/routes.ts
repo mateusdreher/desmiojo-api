@@ -7,6 +7,7 @@ import { authMiddleware } from "../__shared__/infrastructure/http/middlewares/au
 import { JwtProvider } from "../users/infrastructure/providers/jwt.provider";
 import { updateRecipeController } from "./infrastructure/controllers/update-recipe-controller";
 import { downloadRecipeController } from "./infrastructure/controllers/download-recipe.controller";
+import { getRecipeByIdController } from "./infrastructure/controllers/get-recipe-by-id.controller";
 
 const router = Router();
 const ensureAuthenticated = authMiddleware(new JwtProvider());
@@ -55,6 +56,14 @@ router.get(
   ensureAuthenticated,
   (request: Request, response: Response, next: NextFunction) => {
     return downloadRecipeController.handle(request, response, next);
+  },
+);
+
+router.get(
+  "/:recipeId/",
+  ensureAuthenticated,
+  (request: Request, response: Response, next: NextFunction) => {
+    return getRecipeByIdController.handle(request, response, next);
   },
 );
 

@@ -1,4 +1,3 @@
-# --- Estágio 1: Builder ---
 FROM node:22-alpine AS builder
 
 WORKDIR /app
@@ -14,7 +13,6 @@ RUN pnpm prisma generate && \
   pnpm build
 
 
-# --- Estágio 2: Final/Produção ---
 FROM node:22-alpine
 
 WORKDIR /app

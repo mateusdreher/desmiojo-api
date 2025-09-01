@@ -5,8 +5,7 @@
     "properties": {
       "login": {
         "type": "string",
-        "format": "email",
-        "example": "john.doe@email.com"
+        "example": "miojoless"
       },
       "password": { "type": "string", "example": "Password123" }
     }

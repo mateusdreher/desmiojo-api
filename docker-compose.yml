@@ -23,7 +23,7 @@ services:
     environment:
       DATABASE_URL: "postgresql://desmiojo:P@ssword@desmiojo-db:5432/desmiojo_db"
       PORT: 3004
-      JWT_SECRET: "seu-segredo-super-secreto-aqui"
+      JWT_SECRET: ${JWT_SECRET}
 
     volumes:
       - ./src:/app/src
