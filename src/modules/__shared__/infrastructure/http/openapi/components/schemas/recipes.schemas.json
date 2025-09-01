@@ -35,6 +35,7 @@
   "UpdateRecipeInput": {
     "type": "object",
     "properties": {
+      "id": { "type": "string" },
       "title": { "type": "string", "example": "Bolo de Chocolate" },
       "ingredients": {
         "type": "array",

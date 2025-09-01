@@ -143,15 +143,6 @@
     "get": {
       "tags": ["Receitas"],
       "summary": "Lista as receitas de um autor específico.",
-      "parameters": [
-        {
-          "name": "authorId",
-          "in": "query",
-          "required": true,
-          "description": "O ID do autor para buscar as receitas.",
-          "schema": { "type": "string", "format": "uuid" }
-        }
-      ],
       "responses": {
         "200": {
           "description": "Uma lista de receitas.",
