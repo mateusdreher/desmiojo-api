@@ -38,18 +38,6 @@ Antes de começar, garanta que você tenha as seguintes ferramentas instaladas n
     ```bash
     cp .env.example .env
     ```
-    
-    ```env
-    # .env.example
-
-    # Configurações da Aplicação
-    API_PORT=3004
-    DOCKER_API_PORT=3333
-    DB_PORT=5432
-    DOCKER_DB_PORT=5432
-    JWT_SECRET="seu-segredo-super-secreto-shhhh"
-    DATABASE_URL=""postgresql://desmiojo:P@ssword@localhost:5432/desmiojo_db?schema=desmiojo"
-    ```
     **Importante:** A api vai funcionar com essas envs, mas podem ser mudadas caso queira, é importante mudar o JWT_SECRET para maior segurança.
 
 ## 📦 Instalação
